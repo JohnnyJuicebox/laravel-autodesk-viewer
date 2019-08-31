@@ -1,99 +1,110 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
 
-        <title>Laravel</title>
+    <!-- The Viewer CSS -->
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/style.min.css" type="text/css">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+        <title>Laravel Autodesk Viewer</title>
 
-            .full-height {
-                height: 100vh;
-            }
+       
+  <!-- Developer CSS -->
+  <style>
+        body {
+            margin: 0;
+        }
+        #MyViewerDiv {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #F0F8FF;
+        }
+    </style>
+</head>
+<body>
+    <!-- The Viewer will be instantiated here -->
+    <div id="MyViewerDiv"></div>
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+    <!-- The Viewer JS -->
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
 
-            .position-ref {
-                position: relative;
-            }
+    <!-- Developer JS -->
+    <script>
+        var myViewerDiv = document.getElementById('MyViewerDiv');
+      var viewer = new Autodesk.Viewing.Private.GuiViewer3D(myViewerDiv);
+      var options = {
+          'env' : 'Local',
+          'document' : '{{ url('/') }}/autodesk/shaver/0.svf'
+      };
+      Autodesk.Viewing.Initializer(options, function() {
+        viewer.start(options.document, options);
+      });
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+        // var viewerApp;
+        // var options = {
+        //     env: 'AutodeskProduction',
+        //     api: 'derivativeV2',
+        //         // TODO: for models uploaded to EMEA change this option to 'derivativeV2_EU'
+        //     getAccessToken: function(onGetAccessToken) {
+        //         //
+        //         // TODO: Replace static access token string below with call to fetch new token from your backend
+        //         // Both values are provided by Forge's Authentication (OAuth) API.
+        //         //
+        //         // Example Forge's Authentication (OAuth) API return value:
+        //         // {
+        //         //    "access_token": "<YOUR_APPLICATION_TOKEN>",
+        //         //    "token_type": "Bearer",
+        //         //    "expires_in": 86400
+        //         // }
+        //         //
+        //         var accessToken = '<YOUR_APPLICATION_TOKEN>';
+        //         var expireTimeSeconds = 60 * 30;
+        //         onGetAccessToken(accessToken, expireTimeSeconds);
+        //     }
 
-            .content {
-                text-align: center;
-            }
+        // };
+        // var documentId = 'urn:<YOUR_URN_ID>';
+        // Autodesk.Viewing.Initializer(options, function onInitialized(){
+        //     viewerApp = new Autodesk.Viewing.ViewingApplication('MyViewerDiv');
+        //     viewerApp.registerViewer(viewerApp.k3D, Autodesk.Viewing.Private.GuiViewer3D);
+        //     viewerApp.loadDocument(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
+        // });
 
-            .title {
-                font-size: 84px;
-            }
+        // function onDocumentLoadSuccess(doc) {
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+        //     // We could still make use of Document.getSubItemsWithProperties()
+        //     // However, when using a ViewingApplication, we have access to the **bubble** attribute,
+        //     // which references the root node of a graph that wraps each object from the Manifest JSON.
+        //     var viewables = viewerApp.bubble.search({'type':'geometry'});
+        //     if (viewables.length === 0) {
+        //         console.error('Document contains no viewables.');
+        //         return;
+        //     }
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+        //     // Choose any of the avialble viewables
+        //     viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
+        // }
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+        // function onDocumentLoadFailure(viewerErrorCode) {
+        //     console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
+        // }
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+        // function onItemLoadSuccess(viewer, item) {
+        //     console.log('onItemLoadSuccess()!');
+        //     console.log(viewer);
+        //     console.log(item);
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
+        //     // Congratulations! The viewer is now ready to be used.
+        //     console.log('Viewers are equal: ' + (viewer === viewerApp.getCurrentViewer()));
+        // }
+
+        // function onItemLoadFail(errorCode) {
+        //     console.error('onItemLoadFail() - errorCode:' + errorCode);
+        // }
+
+    </script>
+</body>
 </html>

@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome',['clientId' => env('AUTODESK_CLIENT_ID'),'clientSecret' => env('AUTDOESK_CLIENT_SECRET')]);
 });

@@ -1,2 +1,4 @@
-# Laravel 5.6 Autodesk Viewer
-Test platform for Autodesk Forge Viewer and Laravel 5.6
+# Laravel 5.8 Autodesk Viewer
+Test platform for Autodesk Forge Viewer version 6.6.4 and Laravel 5.8
+
+# Run command 'php artisan serve'
